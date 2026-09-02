@@ -1,102 +1,127 @@
-# Student Records API
+# Student Records API (Hack-o-Week)
 
-A simple REST API for managing student records, built with **Flask**, validated with **Pydantic**, and stored in a local **SQLite** database. Includes a glassmorphism-styled web dashboard for viewing, adding, editing, and deleting students.
+A simple yet powerful **REST API** for managing student records, built with **Flask**, validated with **Pydantic**, and stored in a local **SQLite** database. The project also includes a modern **glassmorphism-styled web dashboard** for intuitive CRUD operations without needing a frontend framework.
 
-## Features
+This project was developed as part of the **Hack-o-Week** event (Odd Semester V).
 
-- Full CRUD (Create, Read, Update, Delete) for student records
-- Request validation with Pydantic — rejects bad data (missing names, invalid ages) with clear error messages
-- Persistent storage using SQLite — data survives server restarts
-- Live search/filter on the frontend
-- Clean glassmorphism UI with subtle animations, built with plain HTML/CSS/JS (no frontend framework required)
+## 🚀 Features
 
-## Tech stack
+- **Full CRUD Operations**: Create, Read, Update, and Delete student records seamlessly.
+- **Robust Validation**: Uses **Pydantic** to ensure data integrity (e.g., valid ages, non-empty names) with clear error messages.
+- **Persistent Storage**: Data is stored in **SQLite**, ensuring records survive server restarts.
+- **Live Search & Filter**: The frontend dashboard allows real-time searching and filtering of students.
+- **Modern UI**: A clean **glassmorphism** design built with plain HTML, CSS, and vanilla JavaScript.
+- **Jupyter Notebooks**: Includes step-by-step notebooks (`hackoweek*.ipynb`) demonstrating the development process and API testing.
 
-| Layer | Tool |
-|---|---|
-| Backend | Python, Flask |
-| Validation | Pydantic |
-| Database | SQLite |
-| Frontend | HTML, CSS, vanilla JavaScript |
+## 🛠 Tech Stack
 
-## Project structure
+| Layer | Technology |
+| :--- | :--- |
+| **Backend** | Python, Flask |
+| **Validation** | Pydantic |
+| **Database** | SQLite |
+| **Frontend** | HTML, CSS, Vanilla JavaScript |
+| **Development** | Jupyter Notebooks |
 
-```
+## 📂 Project Structure
+
+```text
 .
-├── student_api.py       # Flask app: routes and request handling
-├── database.py          # SQLite connection and table setup
-├── schemas.py           # Pydantic models for request validation
+├── README.md
+├── student_apihackoweek1-2.py   # Main Flask application entry point
+├── database.py                  # SQLite database connection and setup
+├── schemas.py                   # Pydantic models for request validation
 ├── templates/
-│   └── index.html       # Frontend dashboard
-└── students.db          # SQLite database file (auto-created on first run)
-```
+│   └── index.html               # Glassmorphism web dashboard
+├── students.db                  # SQLite database file (auto-created on first run)
+├── studentinfo.html             # Legacy/Alternative HTML view
+├── hckoweek3-4.ipynb            # Development notes: Weeks 3-4
+├── hackoweekpython5-6.ipynb     # Development notes: Weeks 5-6
+├── hackoweek7_8.ipynb           # Development notes: Weeks 7-8
+└── hackoweek9_10.ipynb          # Development notes: Weeks 9-10
+🏁 Getting Started
+Prerequisites
+Python 3.8+
+pip package manager
+Installation
+Clone the repository:
 
-## Getting started
+bash
 
-### 1. Clone the repo
+Copy
+git clone https://github.com/saik-99/hack-o-week_oddsem_V.git
+cd hack-o-week_oddsem_V
+Create a virtual environment (recommended):
 
-```bash
-git clone https://github.com/yourusername/student-api.git
-cd student-api
-```
+bash
 
-### 2. Create a virtual environment
-
-```bash
+Copy
 python3 -m venv venv
-source venv/bin/activate      # On Windows: venv\Scripts\activate
-```
 
-### 3. Install dependencies
+# On macOS/Linux
+source venv/bin/activate
 
-```bash
+# On Windows
+venv\Scripts\activate
+Install dependencies:
+
+bash
+
+Copy
 pip install flask pydantic
-```
+Run the application:
 
-### 4. Run the app
+bash
 
-```bash
-python3 student_api.py
-```
+Copy
+python3 student_apihackoweek1-2.py
+Access the Dashboard: Open your browser and visit: http://localhost:5001
 
-### 5. Open it
+📡 API Reference
+The API runs on http://localhost:5001.
 
-Visit **http://localhost:5001** in your browser for the dashboard, or hit the API directly (see below).
+GET
+/students
+List all students
+GET
+/students/<id>
+Get a single student by ID
+POST
+/students
+Create a new student
+PUT
+/students/<id>
+Update an existing student
+DELETE
+/students/<id>
+Delete a student
+Example Requests
+Create a new student:
 
-## API reference
+bash
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/students` | List all students |
-| GET | `/students/<id>` | Get a single student by ID |
-| POST | `/students` | Create a new student |
-| PUT | `/students/<id>` | Update an existing student |
-| DELETE | `/students/<id>` | Delete a student |
-
-### Example requests
-
-**Create a student**
-```bash
+Copy
 curl -X POST http://localhost:5001/students \
   -H "Content-Type: application/json" \
-  -d '{"name": "John Doe", "age": 22, "grade": "A", "course": "Math"}'
-```
+  -d '{"name": "Ali Khan", "age": 20, "grade": "A", "course": "Computer Science"}'
+Update a student's grade:
 
-**Update a student's grade**
-```bash
+bash
+
+Copy
 curl -X PUT http://localhost:5001/students/1 \
   -H "Content-Type: application/json" \
   -d '{"grade": "A+"}'
-```
+Delete a student:
 
-**Delete a student**
-```bash
+bash
+
+Copy
 curl -X DELETE http://localhost:5001/students/1
-```
+Example Response
+json
 
-### Example response
-
-```json
+Copy
 {
   "id": 1,
   "name": "Ali Khan",
@@ -104,24 +129,39 @@ curl -X DELETE http://localhost:5001/students/1
   "grade": "A",
   "course": "Computer Science"
 }
-```
+📋 Validation Rules
+The API enforces the following rules via Pydantic:
 
-## Validation rules
+name
+string
+Yes
+Non-empty string
+age
+integer
+No
+Between 0 and 120
+grade
+string
+No
+Any string
+course
+string
+No
+Any string
+Invalid requests will return a 400 Bad Request status with details on the validation failure.
 
-- `name` — required, non-empty string
-- `age` — optional, integer between 0 and 120
-- `grade` — optional string
-- `course` — optional string
+🗺 Roadmap
 
-Invalid requests return a `400` status with details on what failed.
+ Add authentication for write operations (POST/PUT/DELETE)
 
-## Roadmap
+ Implement pagination for large student lists
 
-- [ ] Authentication for write operations
-- [ ] Pagination for large student lists
-- [ ] Filter/search via query parameters (e.g. `/students?course=Math`)
-- [ ] Docker support
+ Add query parameter filtering (e.g., /students?course=Math)
 
-## License
+ Add Docker support for containerized deployment
+📄 License
+This project is licensed under the MIT License.
 
-MIT
+👨‍💻 Author
+saik-99
+Hack-o-Week Odd Semester V Participant
